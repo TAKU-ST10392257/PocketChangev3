@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 
 class CategoryViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
+    private val _emptyState = MutableLiveData<Boolean>().apply { value = true }
+    val emptyState: LiveData<Boolean> = _emptyState
+
+    // Later we will connect this to the actual categories list
 }
