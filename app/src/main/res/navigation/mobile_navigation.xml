@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_category">
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="vcmsa.projects.pocketchange_v3.ui.Category.CategoryFragment"
+        android:label="Categories" />
+
+    <fragment
+        android:id="@+id/navigation_budget"
+        android:name="vcmsa.projects.pocketchange_v3.ui.Budget.BudgetFragment"
+        android:label="@string/title_budget"
+        tools:layout="@layout/fragment_budget" />
+
+    <fragment
+        android:id="@+id/navigation_expenses"
+        android:name="vcmsa.projects.pocketchange_v3.ui.Expenses.ExpensesFragment"
+        android:label="@string/title_expenses"
+        tools:layout="@layout/fragment_expenses" />
+</navigation>
