@@ -6,9 +6,10 @@
     app:startDestination="@+id/navigation_category">
 
     <fragment
-        android:id="@+id/categoryFragment"
+        android:id="@+id/navigation_category"
         android:name="vcmsa.projects.pocketchange_v3.ui.Category.CategoryFragment"
-        android:label="Categories" />
+        android:label="@string/title_category"
+        tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/navigation_budget"
