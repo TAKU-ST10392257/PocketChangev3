@@ -5,21 +5,37 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_category">
 
+    <!-- Category Fragment -->
     <fragment
         android:id="@+id/navigation_category"
         android:name="vcmsa.projects.pocketchange_v3.ui.Category.CategoryFragment"
         android:label="@string/title_category"
         tools:layout="@layout/fragment_category" />
 
+    <!-- Budget Fragment -->
     <fragment
         android:id="@+id/navigation_budget"
         android:name="vcmsa.projects.pocketchange_v3.ui.Budget.BudgetFragment"
         android:label="@string/title_budget"
         tools:layout="@layout/fragment_budget" />
 
+    <!-- Expenses Fragment -->
     <fragment
         android:id="@+id/navigation_expenses"
-        android:name="vcmsa.projects.pocketchange_v3.ui.Expenses.ExpensesFragment"
+        android:name="vcmsa.projects.pocketchange_v3.ui.Expenses.ExpenseFragment"
         android:label="@string/title_expenses"
-        tools:layout="@layout/fragment_expenses" />
+        tools:layout="@layout/fragment_expenses">
+
+        <!-- Add action here -->
+        <action
+            android:id="@+id/action_navigation_expenses_to_addExpenseFragment"
+            app:destination="@id/addExpenseFragment" />
+    </fragment>
+
+    <!-- AddExpense Fragment -->
+    <fragment
+        android:id="@+id/addExpenseFragment"
+        android:name="vcmsa.projects.pocketchange_v3.ui.Expenses.AddExpenseFragment"
+        android:label="Add Expense"
+        tools:layout="@layout/fragment_add_expense" />
 </navigation>

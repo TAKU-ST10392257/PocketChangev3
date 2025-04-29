@@ -5,10 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Budget::class], version = 1, exportSchema = false)
+@Database(entities = [Budget::class, Expense::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun budgetDao(): BudgetDao
+    abstract fun expenseDao(): ExpenseDao  // ✅ Add this line
 
     companion object {
         @Volatile
@@ -19,7 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "pocketchange_db"
+                    "pocketchange_database"
                 ).build()
                 INSTANCE = instance
                 instance
