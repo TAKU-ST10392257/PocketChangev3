@@ -1,13 +1,30 @@
 package vcmsa.projects.pocketchange_v3.ui.Budget
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
+import vcmsa.projects.pocketchange_v3.data.Budget
+import vcmsa.projects.pocketchange_v3.data.AppDatabase
+import vcmsa.projects.pocketchange_v3.data.BudgetRepository
 
-class BudgetViewModel : ViewModel() {
+class BudgetViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+    private val repository: BudgetRepository
+    val currentBudget: LiveData<Budget?>
+
+    init {
+        val budgetDao = AppDatabase.getDatabase(application).budgetDao()
+        repository = BudgetRepository(budgetDao)
+        currentBudget = repository.getBudget()
     }
-    val text: LiveData<String> = _text
+
+    fun insertBudget(budget: Budget) = viewModelScope.launch {
+        repository.insert(budget)  // ✅ This matches the repository method
+    }
+
+    fun deleteBudget() = viewModelScope.launch {
+        repository.deleteBudget()
+    }
+
+    // Optional: clear or update budget logic can go here
 }

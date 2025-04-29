@@ -1,16 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="80dp"
-    android:fitsSystemWindows="true">
+    android:layout_marginTop="50dp"
+    android:orientation="vertical"
+    android:padding="24dp">
 
+    <!-- Input Mode -->
     <LinearLayout
+        android:id="@+id/inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+
+        android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -44,4 +47,35 @@
             android:text="Save Budget"
             android:layout_marginTop="24dp"/>
     </LinearLayout>
-</ScrollView>
+
+    <!-- Display Mode -->
+    <LinearLayout
+        android:id="@+id/displayLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvBudgetValues"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnEditBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Budget"/>
+
+        <Button
+            android:id="@+id/btnDeleteBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Delete Budget"/>
+    </LinearLayout>
+
+</LinearLayout>
