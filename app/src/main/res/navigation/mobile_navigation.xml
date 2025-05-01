@@ -22,7 +22,7 @@
     <!-- Expenses Fragment -->
     <fragment
         android:id="@+id/navigation_expenses"
-        android:name="vcmsa.projects.pocketchange_v3.ui.Expenses.ExpenseFragment"
+        android:name="vcmsa.projects.pocketchange_v3.ui.Expense.AddExpenseFragment"
         android:label="@string/title_expenses"
         tools:layout="@layout/fragment_expenses">
 
@@ -35,7 +35,7 @@
     <!-- AddExpense Fragment -->
     <fragment
         android:id="@+id/addExpenseFragment"
-        android:name="vcmsa.projects.pocketchange_v3.ui.Expenses.AddExpenseFragment"
+        android:name="vcmsa.projects.pocketchange_v3.ui.Expense.AddExpenseFragment"
         android:label="Add Expense"
         tools:layout="@layout/fragment_add_expense" />
 </navigation>

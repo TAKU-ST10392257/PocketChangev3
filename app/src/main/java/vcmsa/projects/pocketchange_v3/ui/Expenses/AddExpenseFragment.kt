@@ -1,57 +1,152 @@
-package vcmsa.projects.pocketchange_v3.ui.Expenses
+package vcmsa.projects.pocketchange_v3.ui.Expense
 
+import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.ViewModelProvider
 import vcmsa.projects.pocketchange_v3.R
-import vcmsa.projects.pocketchange_v3.data.Expense
-import vcmsa.projects.pocketchange_v3.databinding.FragmentAddExpenseBinding
+import vcmsa.projects.pocketchange_v3.model.Expense
+
+import vcmsa.projects.pocketchange_v3.ui.Category.CategoryViewModel
+import vcmsa.projects.pocketchange_v3.ui.Expense.ExpenseViewModel
+import java.util.*
 
 class AddExpenseFragment : Fragment() {
 
-    private var _binding: FragmentAddExpenseBinding? = null
-    private val binding get() = _binding!!
-
-    // Access the shared ViewModel
-    private val addExpenseViewModel: AddExpenseViewModel by activityViewModels()
+    private lateinit var categoryViewModel: CategoryViewModel
+    private lateinit var expenseViewModel: ExpenseViewModel
+    private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
+    private var selectedCategoryId: Int? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAddExpenseBinding.inflate(inflater, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_expense, container, false)
 
-        // Handle the save button click
-        binding.btnSaveExpense.setOnClickListener {
-            val amount = binding.etAmount.text.toString().toDoubleOrNull()
-            val description = binding.etDescription.text.toString()
-            val category = binding.etCategory.text.toString()
+        val btnSelectDate = view.findViewById<Button>(R.id.btnSelectDate)
+        val btnStartTime = view.findViewById<Button>(R.id.btnStartTime)
+        val btnEndTime = view.findViewById<Button>(R.id.btnEndTime)
+        val spinnerCategories = view.findViewById<Spinner>(R.id.spinnerCategories)
+        val etAmount = view.findViewById<EditText>(R.id.etAmount)
+        val etDescription = view.findViewById<EditText>(R.id.etDescription)
+        val ivExpenseImage = view.findViewById<ImageView>(R.id.ivExpenseImage)
+        val btnAddPhoto = view.findViewById<Button>(R.id.btnAddPhoto)
+        val btnSaveExpense = view.findViewById<Button>(R.id.btnSaveExpense)
 
-            // Check if all fields are filled
-            if (amount != null && description.isNotEmpty() && category.isNotEmpty()) {
-                val expense = Expense(
-                    amount = amount,
-                    description = description,
-                    category = category,
-                    timestamp = System.currentTimeMillis() // Use the current timestamp for the date
-                )
-                addExpenseViewModel.addExpense(expense)
-                findNavController().navigateUp() // Go back to the previous fragment after adding
-            } else {
-                // Show error if fields are empty or invalid
-                // For example, show a toast or display a Snackbar
+        // ViewModels
+        categoryViewModel = ViewModelProvider(this)[CategoryViewModel::class.java]
+        expenseViewModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
+
+        // Observe and populate category spinner
+        categoryViewModel.allCategories.observe(viewLifecycleOwner) { categories ->
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories.map { it.categoryName })
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerCategories.adapter = adapter
+
+            spinnerCategories.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                    selectedCategoryId = categories[position].categoryId
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    selectedCategoryId = null
+                }
             }
         }
 
-        return binding.root
-    }
+        // Date picker
+        btnSelectDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val datePicker = DatePickerDialog(
+                requireContext(),
+                { _, year, month, dayOfMonth ->
+                    btnSelectDate.text = getString(R.string.date_format, dayOfMonth, month + 1, year)
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+            datePicker.show()
+        }
+
+        // Time pickers
+        btnStartTime.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            TimePickerDialog(requireContext(), { _, hour, minute ->
+                btnStartTime.text = String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+        }
+
+        btnEndTime.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            TimePickerDialog(requireContext(), { _, hour, minute ->
+                btnEndTime.text = String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+        }
+
+        // Image picker
+        pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val imageUri: Uri? = result.data?.data
+                if (imageUri != null) {
+                    ivExpenseImage.setImageURI(imageUri)
+                    ivExpenseImage.tag = imageUri.toString()
+                    ivExpenseImage.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        btnAddPhoto.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            pickImageLauncher.launch(intent)
+        }
+
+        // Save expense
+        btnSaveExpense.setOnClickListener {
+            val date = btnSelectDate.text.toString()
+            val startTime = btnStartTime.text.toString()
+            val endTime = btnEndTime.text.toString()
+            val amountText = etAmount.text.toString()
+            val description = etDescription.text.toString()
+
+            if (amountText.isEmpty() || selectedCategoryId == null || date == "Select Date" || startTime == "Start Time" || endTime == "End Time") {
+                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val amount = amountText.toDoubleOrNull()
+            if (amount == null) {
+                Toast.makeText(requireContext(), "Invalid amount", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val imageUrl = ivExpenseImage.tag as? String
+
+            val expense = Expense(
+                date = date,
+                startTime = startTime,
+                endTime = endTime,
+                categoryId = selectedCategoryId!!,
+                amount = amount,
+                description = description,
+                imageUri = imageUrl
+            )
+
+            expenseViewModel.insert(expense)
+            Toast.makeText(requireContext(), "Expense saved", Toast.LENGTH_SHORT).show()
+            // Optionally clear fields or navigate back
+        }
+
+        return view
     }
 }

@@ -1,20 +1,22 @@
-package vcmsa.projects.pocketchange_v3.ui.Expenses
+package vcmsa.projects.pocketchange_v3.ui.expense
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import vcmsa.projects.pocketchange_v3.R
-import vcmsa.projects.pocketchange_v3.databinding.ItemExpenseBinding
 import vcmsa.projects.pocketchange_v3.model.Expense
 
-class ExpenseAdapter(private val expenses: List<Expense>) :
-    RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
+class ExpensesAdapter : RecyclerView.Adapter<ExpensesAdapter.ExpenseViewHolder>() {
 
-    inner class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvDescription: TextView = itemView.findViewById(R.id.tvExpenseDescription)
-        val tvAmount: TextView = itemView.findViewById(R.id.tvExpenseAmount)
+    private var expenses: List<Expense> = emptyList()
+
+    fun submitList(newExpenses: List<Expense>) {
+        expenses = newExpenses
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseViewHolder {
@@ -24,10 +26,36 @@ class ExpenseAdapter(private val expenses: List<Expense>) :
     }
 
     override fun onBindViewHolder(holder: ExpenseViewHolder, position: Int) {
-        val expense = expenses[position]
-        holder.tvDescription.text = expense.description
-        holder.tvAmount.text = "R${expense.amount}"
+        holder.bind(expenses[position])
     }
 
-    override fun getItemCount() = expenses.size
+    override fun getItemCount(): Int = expenses.size
+
+    class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val category: TextView = itemView.findViewById(R.id.tvExpenseCategory)
+        private val amount: TextView = itemView.findViewById(R.id.tvExpenseAmount)
+        private val dateTime: TextView = itemView.findViewById(R.id.tvExpenseDateTime)
+        private val description: TextView = itemView.findViewById(R.id.tvExpenseDescription)
+        private val image: ImageView = itemView.findViewById(R.id.ivExpensePhoto)
+
+        fun bind(expense: Expense) {
+            category.text = expense.categoryId.toString()
+
+            amount.text = itemView.context.getString(R.string.expense_amount_format, expense.amount)
+            dateTime.text = itemView.context.getString(
+                R.string.expense_datetime_format,
+                expense.date,
+                expense.startTime,
+                expense.endTime
+            )
+            description.text = expense.description
+
+            if (!expense.imageUri.isNullOrEmpty()) {
+                image.visibility = View.VISIBLE
+                image.setImageURI(expense.imageUri.toUri())
+            } else {
+                image.visibility = View.GONE
+            }
+        }
+    }
 }

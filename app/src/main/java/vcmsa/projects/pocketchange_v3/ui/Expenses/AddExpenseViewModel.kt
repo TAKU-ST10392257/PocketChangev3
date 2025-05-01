@@ -5,8 +5,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import vcmsa.projects.pocketchange_v3.data.AppDatabase
-import vcmsa.projects.pocketchange_v3.data.Expense
+import vcmsa.projects.pocketchange_v3.data.ExpenseDao
+
+
 import vcmsa.projects.pocketchange_v3.data.ExpenseRepository
+import vcmsa.projects.pocketchange_v3.model.Expense
 
 class AddExpenseViewModel(application: Application) : AndroidViewModel(application) {
 

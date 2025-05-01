@@ -4,27 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import vcmsa.projects.pocketchange_v3.R
-import vcmsa.projects.pocketchange_v3.model.Category
+import vcmsa.projects.pocketchange_v3.data.Category
 
-class CategoryAdapter(
-    private var categories: List<Category>,
-    private val listener: OnItemClickListener
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter : ListAdapter<Category, CategoryAdapter.CategoryViewHolder>(DiffCallback()) {
 
-    interface OnItemClickListener {
-        fun onItemClick(category: Category)
-    }
-
-    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvName: TextView = itemView.findViewById(R.id.tvCategoryName)
-
+    class CategoryViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(category: Category) {
-            tvName.text = category.name
-            itemView.setOnClickListener {
-                listener.onItemClick(category)
-            }
+            view.findViewById<TextView>(R.id.tvCategoryName).text = category.categoryName
         }
     }
 
@@ -35,8 +25,11 @@ class CategoryAdapter(
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(categories[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount() = categories.size
+    class DiffCallback : DiffUtil.ItemCallback<Category>() {
+        override fun areItemsTheSame(oldItem: Category, newItem: Category) = oldItem.categoryId == newItem.categoryId
+        override fun areContentsTheSame(oldItem: Category, newItem: Category) = oldItem == newItem
+    }
 }

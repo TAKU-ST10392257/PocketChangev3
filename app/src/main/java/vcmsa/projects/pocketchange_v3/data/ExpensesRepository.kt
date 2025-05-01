@@ -1,6 +1,9 @@
 package vcmsa.projects.pocketchange_v3.data
 
 import androidx.lifecycle.LiveData
+import vcmsa.projects.pocketchange_v3.data.ExpenseDao
+import vcmsa.projects.pocketchange_v3.model.Expense
+
 
 class ExpenseRepository(private val expenseDao: ExpenseDao) {
 
@@ -9,18 +12,15 @@ class ExpenseRepository(private val expenseDao: ExpenseDao) {
     }
 
     suspend fun insert(expense: Expense) {
-        expenseDao.insertExpense(expense)
-    }
-
-    suspend fun update(expense: Expense) {
-        expenseDao.updateExpense(expense)
+        expenseDao.insert(expense)
     }
 
     suspend fun delete(expense: Expense) {
-        expenseDao.deleteExpense(expense)
+        expenseDao.delete(expense)
     }
 
-    suspend fun deleteAll() {
-        expenseDao.deleteAllExpenses()
+    suspend fun update(expense: Expense) {
+        expenseDao.update(expense)
     }
 }
+

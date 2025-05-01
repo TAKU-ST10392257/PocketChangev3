@@ -1,11 +1,17 @@
 package vcmsa.projects.pocketchange_v3.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+
+@Entity(tableName = "expenses")
 data class Expense(
-    val id: Long,
-    val title: String,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val categoryId: Int,
     val amount: Double,
-    val date: String,
-    val category: String,
-    val description: String
+    val description: String,
+    val imageUri: String?,         // Optional photo
+    val date: String,              // Format: "yyyy-MM-dd"
+    val startTime: String,         // Format: "HH:mm"
+    val endTime: String? = null,   // Optional end time, can be null            // Format: "HH:mm"
 )
