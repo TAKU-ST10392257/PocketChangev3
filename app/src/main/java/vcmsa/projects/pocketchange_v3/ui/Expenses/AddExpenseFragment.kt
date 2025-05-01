@@ -15,6 +15,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import vcmsa.projects.pocketchange_v3.R
 import vcmsa.projects.pocketchange_v3.model.Expense
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 
 import vcmsa.projects.pocketchange_v3.ui.Category.CategoryViewModel
 import vcmsa.projects.pocketchange_v3.ui.Expenses.ExpenseViewModel
@@ -25,12 +30,15 @@ class AddExpenseFragment : Fragment() {
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var expenseViewModel: ExpenseViewModel
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
+    private lateinit var navHostFragment: NavHostFragment
+    private lateinit var navController: NavController
     private var selectedCategoryId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_expense, container, false)
+
 
         val btnSelectDate = view.findViewById<Button>(R.id.btnSelectDate)
         val btnStartTime = view.findViewById<Button>(R.id.btnStartTime)
@@ -41,6 +49,7 @@ class AddExpenseFragment : Fragment() {
         val ivExpenseImage = view.findViewById<ImageView>(R.id.ivExpenseImage)
         val btnAddPhoto = view.findViewById<Button>(R.id.btnAddPhoto)
         val btnSaveExpense = view.findViewById<Button>(R.id.btnSaveExpense)
+
 
         // ViewModels
         categoryViewModel = ViewModelProvider(this)[CategoryViewModel::class.java]
@@ -153,4 +162,19 @@ class AddExpenseFragment : Fragment() {
 
         return view
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                findNavController().popBackStack()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
 }

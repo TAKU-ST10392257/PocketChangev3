@@ -42,6 +42,8 @@
         <!-- Add action here -->
         <action
             android:id="@+id/action_addExpenseFragment_to_navigation_expenses"
-            app:destination="@id/navigation_expenses" />
+            app:destination="@id/navigation_expenses"
+            app:popUpTo="@id/navigation_expenses"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

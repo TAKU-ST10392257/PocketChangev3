@@ -1,101 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="50dp"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <!-- Toolbar -->
+
+
+    <!-- Scrollable Content -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <!-- Date Selection -->
-        <Button
-            android:id="@+id/btnSelectDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select Date"/>
-
-        <!-- Time Selection -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Date Selection -->
+            <Button
+                android:id="@+id/btnSelectDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Date" />
+
+            <!-- Time Selection -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/btnStartTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Start Time" />
+
+                <Button
+                    android:id="@+id/btnEndTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="End Time" />
+            </LinearLayout>
+
+            <!-- Category Selection -->
+            <Spinner
+                android:id="@+id/spinnerCategories"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp" />
+
+            <!-- Amount Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amount"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Description -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Description" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Image Section -->
+            <ImageView
+                android:id="@+id/ivExpenseImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone" />
 
             <Button
-                android:id="@+id/btnStartTime"
-                android:layout_width="0dp"
+                android:id="@+id/btnAddPhoto"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Start Time"/>
+                android:text="Add Photo"
+                android:layout_marginTop="16dp" />
 
             <Button
-                android:id="@+id/btnEndTime"
-                android:layout_width="0dp"
+                android:id="@+id/btnSaveExpense"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="End Time"/>
+                android:text="Save Expense"
+                android:layout_marginTop="24dp" />
+
         </LinearLayout>
-
-        <!-- Category Selection -->
-        <Spinner
-            android:id="@+id/spinnerCategories"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:textSize="18sp"/>
-
-        <!-- Amount Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAmount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Amount"
-                android:inputType="numberDecimal"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Description -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Description"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Image Section -->
-        <ImageView
-            android:id="@+id/ivExpenseImage"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/btnAddPhoto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Photo"
-            android:layout_marginTop="16dp"/>
-
-        <Button
-            android:id="@+id/btnSaveExpense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Expense"
-            android:layout_marginTop="24dp"/>
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>
