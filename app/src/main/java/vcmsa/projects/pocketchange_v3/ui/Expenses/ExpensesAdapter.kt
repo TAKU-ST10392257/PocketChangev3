@@ -1,4 +1,4 @@
-package vcmsa.projects.pocketchange_v3.ui.expense
+package vcmsa.projects.pocketchange_v3.ui.Expenses
 
 import android.view.LayoutInflater
 import android.view.View

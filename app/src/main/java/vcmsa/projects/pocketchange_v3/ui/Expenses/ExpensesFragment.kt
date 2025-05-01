@@ -1,4 +1,4 @@
-package vcmsa.projects.pocketchange_v3.ui.expense
+package vcmsa.projects.pocketchange_v3.ui.Expenses
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,15 +10,18 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import vcmsa.projects.pocketchange_v3.R
-import vcmsa.projects.pocketchange_v3.ui.Expense.ExpenseViewModel
+import vcmsa.projects.pocketchange_v3.ui.Expenses.ExpenseViewModel
+import vcmsa.projects.pocketchange_v3.ui.Expenses.ExpensesAdapter
 
 class ExpenseFragment : Fragment() {
 
     private val expenseViewModel: ExpenseViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ExpensesAdapter
-    private lateinit var btnAddExpense: Button
+    private lateinit var btnAddExpense: FloatingActionButton
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -16,7 +16,7 @@ import vcmsa.projects.pocketchange_v3.R
 import vcmsa.projects.pocketchange_v3.model.Expense
 
 import vcmsa.projects.pocketchange_v3.ui.Category.CategoryViewModel
-import vcmsa.projects.pocketchange_v3.ui.Expense.ExpenseViewModel
+import vcmsa.projects.pocketchange_v3.ui.Expenses.ExpenseViewModel
 import java.util.*
 
 class AddExpenseFragment : Fragment() {

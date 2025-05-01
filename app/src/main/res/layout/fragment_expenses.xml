@@ -13,6 +13,18 @@ android:layout_height="match_parent"
 android:padding="8dp"
 android:clipToPadding="false" />
 
+    <!-- FloatingActionButton to add new expense -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="100dp"
+        android:contentDescription="Add Category"
+        app:srcCompat="@drawable/ic_add"
+        app:tint="@android:color/white" />
+
     <!-- Empty state text -->
 <TextView
 android:id="@+id/tvEmptyState"
@@ -24,14 +36,5 @@ android:textAlignment="center"
 android:textSize="18sp"
 android:visibility="gone"/>
 
-    <!-- FloatingActionButton to add new expense -->
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-android:id="@+id/btnAddExpense"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_gravity="bottom|end"
-android:layout_margin="16dp"
-android:contentDescription="Add Expense"
-app:srcCompat="@drawable/ic_add"
-app:tint="@android:color/white"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

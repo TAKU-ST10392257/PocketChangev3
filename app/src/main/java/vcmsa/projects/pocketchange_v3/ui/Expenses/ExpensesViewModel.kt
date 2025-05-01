@@ -1,4 +1,4 @@
-package vcmsa.projects.pocketchange_v3.ui.Expense
+package vcmsa.projects.pocketchange_v3.ui.Expenses
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
