@@ -37,5 +37,11 @@
         android:id="@+id/addExpenseFragment"
         android:name="vcmsa.projects.pocketchange_v3.ui.Expense.AddExpenseFragment"
         android:label="Add Expense"
-        tools:layout="@layout/fragment_add_expense" />
+        tools:layout="@layout/fragment_add_expense" >
+
+        <!-- Add action here -->
+        <action
+            android:id="@+id/action_addExpenseFragment_to_navigation_expenses"
+            app:destination="@id/navigation_expenses" />
+    </fragment>
 </navigation>

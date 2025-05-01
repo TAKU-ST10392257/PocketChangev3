@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import vcmsa.projects.pocketchange_v3.R
 import vcmsa.projects.pocketchange_v3.model.Expense
 
@@ -142,8 +143,11 @@ class AddExpenseFragment : Fragment() {
                 imageUri = imageUrl
             )
 
+            findNavController().navigate(R.id.action_addExpenseFragment_to_navigation_expenses)
+
             expenseViewModel.insert(expense)
             Toast.makeText(requireContext(), "Expense saved", Toast.LENGTH_SHORT).show()
+
             // Optionally clear fields or navigate back
         }
 
