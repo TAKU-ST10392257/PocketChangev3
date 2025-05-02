@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_navigation_expenses_to_addExpenseFragment"
             app:destination="@id/addExpenseFragment" />
+        <action
+            android:id="@+id/action_expenseFragment_to_expenseDetailFragment"
+            app:destination="@id/expenseDetailFragment" />
     </fragment>
 
     <!-- AddExpense Fragment -->
@@ -45,5 +48,17 @@
             app:destination="@id/navigation_expenses"
             app:popUpTo="@id/navigation_expenses"
             app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/expenseDetailFragment"
+        android:name="vcmsa.projects.pocketchange_v3.ui.Expenses.ExpenseDetailFragment"
+        android:label="Expense Details"
+        tools:layout="@layout/fragment_expense_detail">
+
+        <argument
+            android:name="expense"
+            app:argType="vcmsa.projects.pocketchange_v3.model.Expense"
+            app:nullable="true" />
     </fragment>
 </navigation>

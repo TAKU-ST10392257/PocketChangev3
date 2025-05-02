@@ -16,6 +16,9 @@ class ExpensesAdapter : RecyclerView.Adapter<ExpensesAdapter.ExpenseViewHolder>(
     private var expenses: List<Expense> = emptyList()
     private var categories: List<Category> = emptyList()
 
+    // 👇 New click listener
+    var onItemClick: ((Expense) -> Unit)? = null
+
     fun submitList(newExpenses: List<Expense>) {
         expenses = newExpenses
         notifyDataSetChanged()
@@ -36,6 +39,11 @@ class ExpensesAdapter : RecyclerView.Adapter<ExpensesAdapter.ExpenseViewHolder>(
         val expense = expenses[position]
         val categoryName = categories.find { it.categoryId == expense.categoryId }?.categoryName ?: "Unknown"
         holder.bind(expense, categoryName)
+
+        // 👇 Attach click handler
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(expense)
+        }
     }
 
     override fun getItemCount(): Int = expenses.size

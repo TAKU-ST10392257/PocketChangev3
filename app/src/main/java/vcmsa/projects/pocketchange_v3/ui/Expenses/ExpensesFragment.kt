@@ -70,6 +70,14 @@ class ExpenseFragment : Fragment() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+
+        adapter.onItemClick = { expense ->
+            val bundle = Bundle().apply {
+                putParcelable("expense", expense) // or putSerializable()
+            }
+            findNavController().navigate(R.id.action_expenseFragment_to_expenseDetailFragment, bundle)
+
+        }
     }
 
     private fun updateSortedList() {
