@@ -6,5 +6,10 @@
     <string name="date_format">%1$d/%2$d/%3$d</string>
     <string name="expense_amount_format">R%.2f</string>
     <string name="expense_datetime_format">%1$s %2$s - %3$s</string>
+    <string-array name="sort_options">
+        <item>Newest First</item>
+        <item>Oldest First</item>
+    </string-array>
+
 
 </resources>
