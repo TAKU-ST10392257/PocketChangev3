@@ -1,4 +1,4 @@
-package vcmsa.projects.pocketchange_v3.ui.Expenses
+package vcmsa.projects.pocketchange_v3.ui.auth
 
 //==========================================================================//
 // Daniel Gorin                 ST10438307                                  //
@@ -20,21 +20,32 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import vcmsa.projects.pocketchange_v3.data.AppDatabase
-import vcmsa.projects.pocketchange_v3.data.ExpenseRepository
-import vcmsa.projects.pocketchange_v3.model.Expense
+import vcmsa.projects.pocketchange_v3.data.User
+import vcmsa.projects.pocketchange_v3.repository.UserRepository
 
-class AddExpenseViewModel(application: Application) : AndroidViewModel(application) {
+class UserViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: ExpenseRepository
+    private val userDao = AppDatabase.getDatabase(application).userDao()
+    private val repository = UserRepository(userDao)
 
-    init {
-        val db = AppDatabase.getDatabase(application)
-        val expenseDao = db.expenseDao()
-        val categoryDao = db.categoryDao() // ✅ Include categoryDao
-        repository = ExpenseRepository(expenseDao, categoryDao) // ✅ Pass both DAOs
+    fun registerUser(username: String, password: String, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val existingUser = repository.getUserByUsername(username)
+            if (existingUser != null) {
+                onResult(false) // Username already taken
+            } else {
+                val newUser = User.create(username, password)
+                repository.insertUser(newUser)
+                onResult(true)
+            }
+        }
     }
 
-    fun addExpense(expense: Expense) = viewModelScope.launch {
-        repository.insert(expense)
+    fun loginUser(username: String, password: String, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val hashedPassword = User.hashPassword(password)
+            val user = repository.authenticate(username, hashedPassword)
+            onResult(user != null)
+        }
     }
 }

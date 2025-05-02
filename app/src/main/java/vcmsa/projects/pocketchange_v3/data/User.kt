@@ -1,4 +1,4 @@
-package vcmsa.projects.pocketchange_v3.ui.Expenses
+package vcmsa.projects.pocketchange_v3.data
 
 //==========================================================================//
 // Daniel Gorin                 ST10438307                                  //
@@ -15,26 +15,24 @@ package vcmsa.projects.pocketchange_v3.ui.Expenses
 //             https://chatgpt.com/
 //==========================================================================//
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import vcmsa.projects.pocketchange_v3.data.AppDatabase
-import vcmsa.projects.pocketchange_v3.data.ExpenseRepository
-import vcmsa.projects.pocketchange_v3.model.Expense
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.security.MessageDigest
 
-class AddExpenseViewModel(application: Application) : AndroidViewModel(application) {
+@Entity(tableName = "users")
+data class User(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val username: String,
+    val hashedPassword: String
+) {
+    companion object {
+        fun hashPassword(password: String): String {
+            val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
+            return bytes.joinToString("") { "%02x".format(it) }
+        }
 
-    private val repository: ExpenseRepository
-
-    init {
-        val db = AppDatabase.getDatabase(application)
-        val expenseDao = db.expenseDao()
-        val categoryDao = db.categoryDao() // ✅ Include categoryDao
-        repository = ExpenseRepository(expenseDao, categoryDao) // ✅ Pass both DAOs
-    }
-
-    fun addExpense(expense: Expense) = viewModelScope.launch {
-        repository.insert(expense)
+        fun create(username: String, plainPassword: String): User {
+            return User(username = username, hashedPassword = hashPassword(plainPassword))
+        }
     }
 }

@@ -1,4 +1,4 @@
-package vcmsa.projects.pocketchange_v3.ui.Expenses
+package vcmsa.projects.pocketchange_v3.data
 
 //==========================================================================//
 // Daniel Gorin                 ST10438307                                  //
@@ -15,26 +15,20 @@ package vcmsa.projects.pocketchange_v3.ui.Expenses
 //             https://chatgpt.com/
 //==========================================================================//
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import vcmsa.projects.pocketchange_v3.data.AppDatabase
-import vcmsa.projects.pocketchange_v3.data.ExpenseRepository
-import vcmsa.projects.pocketchange_v3.model.Expense
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import vcmsa.projects.pocketchange_v3.data.User
 
-class AddExpenseViewModel(application: Application) : AndroidViewModel(application) {
+@Dao
+interface UserDao {
 
-    private val repository: ExpenseRepository
+    @Insert
+    suspend fun insertUser(user: User)
 
-    init {
-        val db = AppDatabase.getDatabase(application)
-        val expenseDao = db.expenseDao()
-        val categoryDao = db.categoryDao() // ✅ Include categoryDao
-        repository = ExpenseRepository(expenseDao, categoryDao) // ✅ Pass both DAOs
-    }
+    @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
+    suspend fun getUserByUsername(username: String): User?
 
-    fun addExpense(expense: Expense) = viewModelScope.launch {
-        repository.insert(expense)
-    }
+    @Query("SELECT * FROM users WHERE username = :username AND hashedPassword = :hashedPassword LIMIT 1")
+    suspend fun authenticate(username: String, hashedPassword: String): User?
 }
