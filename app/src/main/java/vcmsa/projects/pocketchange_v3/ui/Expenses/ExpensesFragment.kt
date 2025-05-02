@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import vcmsa.projects.pocketchange_v3.R
-import vcmsa.projects.pocketchange_v3.ui.Expenses.ExpenseViewModel
-import vcmsa.projects.pocketchange_v3.ui.Expenses.ExpensesAdapter
 
 class ExpenseFragment : Fragment() {
 
@@ -22,6 +19,8 @@ class ExpenseFragment : Fragment() {
     private lateinit var adapter: ExpensesAdapter
     private lateinit var btnAddExpense: FloatingActionButton
 
+    private var currentCategories = emptyList<vcmsa.projects.pocketchange_v3.data.Category>()
+    private var currentExpenses = emptyList<vcmsa.projects.pocketchange_v3.model.Expense>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +39,25 @@ class ExpenseFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
+        // Observe categories first
+        expenseViewModel.allCategories.observe(viewLifecycleOwner) { categories ->
+            currentCategories = categories
+            adapter.updateCategories(categories)
+
+            // Re-submit expenses if we already have them
+            if (currentExpenses.isNotEmpty()) {
+                adapter.submitList(currentExpenses)
+            }
+        }
+
+        // Observe expenses
         expenseViewModel.allExpenses.observe(viewLifecycleOwner) { expenses ->
-            adapter.submitList(expenses)
+            currentExpenses = expenses
+
+            // Submit only when categories are available
+            if (currentCategories.isNotEmpty()) {
+                adapter.submitList(expenses)
+            }
         }
 
         btnAddExpense.setOnClickListener {

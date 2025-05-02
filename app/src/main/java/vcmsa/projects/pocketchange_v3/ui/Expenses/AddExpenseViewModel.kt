@@ -5,9 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import vcmsa.projects.pocketchange_v3.data.AppDatabase
-import vcmsa.projects.pocketchange_v3.data.ExpenseDao
-
-
 import vcmsa.projects.pocketchange_v3.data.ExpenseRepository
 import vcmsa.projects.pocketchange_v3.model.Expense
 
@@ -16,11 +13,12 @@ class AddExpenseViewModel(application: Application) : AndroidViewModel(applicati
     private val repository: ExpenseRepository
 
     init {
-        val expenseDao = AppDatabase.getDatabase(application).expenseDao()
-        repository = ExpenseRepository(expenseDao)
+        val db = AppDatabase.getDatabase(application)
+        val expenseDao = db.expenseDao()
+        val categoryDao = db.categoryDao() // ✅ Include categoryDao
+        repository = ExpenseRepository(expenseDao, categoryDao) // ✅ Pass both DAOs
     }
 
-    // Function to insert a new expense
     fun addExpense(expense: Expense) = viewModelScope.launch {
         repository.insert(expense)
     }
