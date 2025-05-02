@@ -2,11 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="50dp"
-    android:orientation="vertical">
-
-    <!-- Toolbar -->
-
+    android:orientation="vertical"
+    android:paddingTop="24dp"
+    android:background="?android:attr/windowBackground">
 
     <!-- Scrollable Content -->
     <ScrollView
@@ -31,12 +29,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:weightSum="2">
 
                 <Button
                     android:id="@+id/btnStartTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:text="Start Time" />
 
@@ -44,6 +45,7 @@
                     android:id="@+id/btnEndTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:text="End Time" />
             </LinearLayout>
@@ -53,7 +55,7 @@
                 android:id="@+id/spinnerCategories"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:textSize="18sp" />
 
             <!-- Amount Input -->
@@ -86,9 +88,11 @@
             <!-- Image Section -->
             <ImageView
                 android:id="@+id/ivExpenseImage"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:visibility="gone" />
 
             <Button
@@ -103,7 +107,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save Expense"
-                android:layout_marginTop="24dp" />
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp" />
 
         </LinearLayout>
     </ScrollView>
